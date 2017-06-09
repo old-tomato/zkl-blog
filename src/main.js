@@ -9,13 +9,26 @@ Vue.config.productionTip = false
 
 Vue.use(VueResource);
 
-// 这里需要写在最顶端
 Vue.http.interceptors.push(function(request, next) {
-  console.log("Vue.http.interceptors");
+  // 统一在请求头中添加COOKIE信息
+  request.headers.set("Z-Blog-Cookie", getCookie("Z-Blog-Cookie"));
+  // 统一增加请求的地址前面一段
+  request.url="http://localhost:8081" + request.url;
+  next((response)=>{
 
-  // continue to next interceptor
-  next();
+  });
 });
+
+function getCookie(cname){
+  var name = cname + "=";
+  var ca = document.cookie.split(';');
+  for(var i=0; i<ca.length; i++)
+  {
+    var c = ca[i].trim();
+    if (c.indexOf(name)==0) return c.substring(name.length,c.length);
+  }
+  return "";
+}
 
 /* eslint-disable no-new */
 new Vue({
