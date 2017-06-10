@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <!-- 这里放置一个头部的标题栏 -->
-    <titleBar :username='username' :uid='uid' v-on:login="login"></titleBar>
+    <titleBar :username='username' :uid='uid' v-on:login="login" v-on:logout="logout"></titleBar>
     <div >
       <router-view v-on:login="login"></router-view>
     </div>
@@ -38,8 +38,7 @@ export default {
         console.log(response);
         if(response.data.code == 200){
           // 加载首页的数据
-          this.username = response.data.result.username;
-          this.uid = response.data.result.uid;
+          this.changeUserTitleInfo(response.data.result.username, response.data.result.uid);
           toastr.success("登陆成功");
         }
       });
@@ -54,8 +53,7 @@ export default {
         }).then(function(response){
           console.log(response);
           if(response.data.code == 200){
-            this.username = response.data.result.username;
-            this.uid = response.data.result.uid;
+            this.changeUserTitleInfo(response.data.result.username, response.data.result.uid);
             var cookie = response.data.result.cookie;
             if(cookie != ''){
               // 保存COOKIE信息，默认的保存时间是7天
@@ -71,6 +69,11 @@ export default {
           }
         });
     },
+    logout(){
+      document.cookie = "Z-Blog-Cookie=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+      this.changeUserTitleInfo("","");
+      this.$router.push({name:'Hello'});
+    },
     getCookie(cname){
       var name = cname + "=";
       var ca = document.cookie.split(';');
@@ -80,6 +83,10 @@ export default {
         if (c.indexOf(name)==0) return c.substring(name.length,c.length);
       }
       return "";
+    },
+    changeUserTitleInfo(username,uid){
+      this.username = username;
+      this.uid = uid;
     }
   }
 }

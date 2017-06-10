@@ -28,7 +28,16 @@
                 <button type="button" class="btn btn-default" @click="regist">注册</button>
               </div>
             </div>
-            <p class="navbar-text navbar-right" v-if='!notLogeIn'>账户：{{username}}</p>
+            <div class="navbar-text navbar-right btn-group" v-if='!notLogeIn'>
+              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                账户：{{username}} <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu">
+                <li><a href="#">个人中心</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="#" @click='logout'>登出</a></li>
+              </ul>
+            </div>
           </div>
     </nav>
   </div>
@@ -55,6 +64,9 @@ export default {
     },
     regist(){
       this.$router.push({name:'Regist'});
+    },
+    logout(){
+      this.$emit('logout');
     }
   },
   props:['username','uid'],
