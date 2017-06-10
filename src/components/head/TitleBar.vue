@@ -64,7 +64,6 @@ export default {
       if(newUid != '' && newUid != 0){
           this.notLogeIn = true;
       }else if(oldUid != '' && oldUid != 0){
-        console.log("right");
         this.notLogeIn = false;
         this.uidChilde = newUid;
         this.usernameChild = this.username;

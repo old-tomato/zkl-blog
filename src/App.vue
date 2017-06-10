@@ -23,8 +23,28 @@ export default {
   components:{
     titleBar
   },
-  // 启动以后，访问COOKIE查看是否存在已经登陆的内容，如果存在，就进行一次验证，如果不存在，显示默认内容
   created(){
+    // 检查是否存在COOKIE 如果存在 需要访问服务器请求当前用户是否合法，如果不合法，跳转到首页
+    var cookie = this.getCookie("Z-Blog-Cookie");
+    if(cookie ==""){
+      // 跳转到首页
+      this.$router.push({name:'Hello'});
+    }else{
+      // 请求网络
+      this.$http.post('/login/autoLogin',{
+          // 自动登录时需要在内容体中加入COOKIE信息
+          cookie:cookie
+      }).then(function(response){
+        console.log(response);
+        if(response.data.code == 200){
+          // 加载首页的数据
+          this.username = response.data.result.username;
+          this.uid = response.data.result.uid;
+          toastr.success("登陆成功");
+          this.$router.push({name:'PrivateFileList'});
+        }
+      });
+    }
   },
   methods:{
     login(username , password){
@@ -35,14 +55,32 @@ export default {
         }).then(function(response){
           console.log(response);
           if(response.data.code == 200){
-            toastr.success("登陆成功");
             this.username = response.data.result.username;
             this.uid = response.data.result.uid;
+            var cookie = response.data.result.cookie;
+            if(cookie != ''){
+              // 保存COOKIE信息，默认的保存时间是7天
+              var d = new Date();
+              d.setDate(d.getDate() + 7);
+              document.cookie = "Z-Blog-Cookie=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+              document.cookie="Z-Blog-Cookie=" + cookie + "; expires=" + d.toUTCString();
+            }
+            toastr.success("登陆成功");
             this.$router.push({name:'PrivateFileList'});
           }else{
             toastr.error(response.data.message);
           }
         });
+    },
+    getCookie(cname){
+      var name = cname + "=";
+      var ca = document.cookie.split(';');
+      for(var i=0; i<ca.length; i++)
+      {
+        var c = ca[i].trim();
+        if (c.indexOf(name)==0) return c.substring(name.length,c.length);
+      }
+      return "";
     }
   }
 }

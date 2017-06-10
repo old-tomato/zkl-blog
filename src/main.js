@@ -15,7 +15,12 @@ Vue.http.interceptors.push(function(request, next) {
   // 统一增加请求的地址前面一段
   request.url="http://localhost:8081" + request.url;
   next((response)=>{
+      if(response.data.code == 200){
 
+      }else{
+        
+        this.$router.push({name:'Hello'});
+      }
   });
 });
 

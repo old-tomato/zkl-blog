@@ -66,6 +66,7 @@
             // 保存COOKIE信息
             var d = new Date();
             d.setDate(d.getDate() + 7);
+            document.cookie = "Z-Blog-Cookie=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
             document.cookie="Z-Blog-Cookie=" + response.data.result + "; expires=" + d.toUTCString();
             this.$emit('login', this.username, this.password);
           }else{
