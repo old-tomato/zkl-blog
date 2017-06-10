@@ -41,7 +41,6 @@ export default {
           this.username = response.data.result.username;
           this.uid = response.data.result.uid;
           toastr.success("登陆成功");
-          this.$router.push({name:'PrivateFileList'});
         }
       });
     }
