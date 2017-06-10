@@ -1,7 +1,7 @@
 <template>
   <!-- 设想是：这个界面左侧为列表栏，右侧为正文栏 -->
 
-<div class="container-fluid panel panel-default"id="test">
+  <div class="container-fluid panel panel-default"id="test">
     <div class="panel-body">
       <ul class="nav nav-pills">
         <li role="presentation" class="active"><a href="#">新文档</a></li>
@@ -20,7 +20,7 @@
 export default {
   created(){
     // 请求获得文件列表信息
-
+    
   }
 }
 </script>

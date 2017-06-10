@@ -1,7 +1,7 @@
 <template>
   <!-- 设想是：这个界面左侧为列表栏，右侧为正文栏 -->
-  <div class="container-fluid" id="PrivateFileList">
-  <FileLeftList class="col-md-2" v-bind:style="{height:height+'px'}"></FileLeftList>
+  <div class="container" id="PrivateFileList">
+  <FileLeftList class="col-md-3" v-bind:style="{height:height+'px'}"></FileLeftList>
   </div>
 </template>
 
@@ -11,7 +11,6 @@ export default {
   data(){
     return {
       contentHeight:{},
-      aaa:{'hegiht':300},
       height:300
     };
   },
