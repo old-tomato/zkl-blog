@@ -1,8 +1,10 @@
 <template>
   <div id="app">
     <!-- 这里放置一个头部的标题栏 -->
-    <titleBar @login="login"></titleBar>
-    <router-view></router-view>
+    <titleBar :username='username' :uid='uid' v-on:login="login"></titleBar>
+    <div >
+      <router-view v-on:login="login"></router-view>
+    </div>
   </div>
 </template>
 
@@ -14,7 +16,8 @@ export default {
   data(){
     return {
       username:'',
-      password:''
+      password:'',
+      uid:''
     }
   },
   components:{
@@ -24,8 +27,22 @@ export default {
   created(){
   },
   methods:{
-    login(username,password){
-      console.log(username + "==============" + password);
+    login(username , password){
+      // 自动登陆然后跳转到正确的界面中
+        this.$http.post('/login/login',{
+          username:username,
+          password:password
+        }).then(function(response){
+          console.log(response);
+          if(response.data.code == 200){
+            toastr.success("登陆成功");
+            this.username = response.data.result.username;
+            this.uid = response.data.result.uid;
+            this.$router.push({name:'PrivateFileList'});
+          }else{
+            toastr.error(response.data.message);
+          }
+        });
     }
   }
 }

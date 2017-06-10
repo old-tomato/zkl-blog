@@ -14,24 +14,18 @@
               <img class="head_icon" src="../../assets/logo.png"/>
             </div>
             <p class="navbar-text">ZKL-BLOG PORJECT 版本：v0.01</p>
-            <form class="navbar-form navbar-left" style="padding:0px">
-              <div class="input-group  col-lg-offset-2" style="width:300px">
-                <input type="text" class="form-control" placeholder="搜索公开的文档" >
-                <span class="btn btn-default input-group-addon" >搜索</span>
-              </div>
-            </form>
-
-            <div class="row navbar-form navbar-right pull-right" style="margin-right:-25px">
-              <div class="input-group col-lg-4  col-lg-offset-2">
+            <div class="navbar-form navbar-right pull-right" style="margin-right:-25px" v-if='notLogeIn'>
+              <div class="input-group col-lg-4  col-lg-offset-1">
                 <span class="input-group-addon">用户名</span>
-                <input type="text" class="form-control" placeholder="" v-model='username'>
+                <input type="text" class="form-control" placeholder="" v-model='usernameChild'>
               </div>
-              <div class="input-group col-lg-4 ">
+              <div class="input-group col-lg-4">
                 <span class="input-group-addon">密码</span>
-                <input type="password" class="form-control" placeholder="" v-model='password'>
+                <input type="password" class="form-control" placeholder="" v-model='passwordChild'>
               </div>
-              <div class="input-group">
+              <div class="btn-group" role="group" aria-label="...">
                 <button type="button" class="btn btn-default" @click="login">登陆</button>
+                <button type="button" class="btn btn-default" @click="regist">注册</button>
               </div>
             </div>
             <p class="navbar-text navbar-right" v-if='!notLogeIn'>账户：{{username}}</p>
@@ -47,8 +41,9 @@ export default {
   data(){
     return {
       notLogeIn:true,
-      username:'',
-      password:''
+      usernameChild:'',
+      passwordChild:'',
+      uidChilde:''
     }
   },
   created(){
@@ -56,11 +51,27 @@ export default {
   },
   methods:{
     login(){
-      this.$emit('login',this.username,this.password);
+      this.$emit('login', this.usernameChild, this.passwordChild);
+    },
+    regist(){
+      this.$router.push({name:'Regist'});
     }
   },
-  props:[],
+  props:['username','uid'],
   watch:{
+    uid(oldUid , newUid){
+      // 当UID发生变化，只要不是0，就说明当前已经登陆
+      if(newUid != '' && newUid != 0){
+          this.notLogeIn = true;
+      }else if(oldUid != '' && oldUid != 0){
+        console.log("right");
+        this.notLogeIn = false;
+        this.uidChilde = newUid;
+        this.usernameChild = this.username;
+      }else{
+        this.notLogeIn = true;
+      }
+    }
   }
 }
 </script>
