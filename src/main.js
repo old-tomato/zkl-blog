@@ -9,6 +9,10 @@ Vue.config.productionTip = false
 
 Vue.use(VueResource);
 
+// 创建一个全局变量，作为信息传递的对象
+var bus = new Vue();
+Vue.prototype.bus = bus;
+
 Vue.http.interceptors.push(function(request, next) {
   // 统一在请求头中添加COOKIE信息
   request.headers.set("Z-Blog-Cookie", getCookie("Z-Blog-Cookie"));
@@ -18,7 +22,7 @@ Vue.http.interceptors.push(function(request, next) {
       if(response.data.code == 200){
 
       }else{
-        
+
         this.$router.push({name:'Hello'});
       }
   });

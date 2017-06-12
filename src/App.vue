@@ -3,7 +3,7 @@
     <!-- 这里放置一个头部的标题栏 -->
     <titleBar :username='username' :uid='uid' v-on:login="login" v-on:logout="logout"></titleBar>
     <div >
-      <router-view v-on:login="login"></router-view>
+      <router-view v-on:login="login" :uid="uid"></router-view>
     </div>
   </div>
 </template>
@@ -37,8 +37,9 @@ export default {
       }).then(function(response){
         console.log(response);
         if(response.data.code == 200){
+          this.uid = response.data.result.uid;
           // 加载首页的数据
-          this.changeUserTitleInfo(response.data.result.username, response.data.result.uid);
+          this.changeUserTitleInfo(response.data.result.username, this.uid);
           toastr.success("登陆成功");
         }
       });
