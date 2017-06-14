@@ -29,6 +29,10 @@ export default {
     if(cookie ==""){
       // 跳转到首页
       this.$router.push({name:'Hello'});
+      // 请求一次访问记录
+      this.$http.get('/login/welcome').then(function(response){
+        console.log("welcome");
+      });
     }else{
       // 请求网络
       this.$http.post('/login/autoLogin',{

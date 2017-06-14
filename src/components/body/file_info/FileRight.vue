@@ -1,12 +1,12 @@
 <template>
   <div>
     <div v-show="fileId === 0">
-      <div class="container">
-       <div class="jumbotron">
-            <h1>欢迎创建文档</h1>
-            <p>点击左侧“创建新文档”创建文档</p>
-          </p>
-       </div>
+        <div class="form-group">
+           <div class="jumbotron">
+                <h1>欢迎创建文档</h1>
+                <p>点击左侧“创建新文档”创建文档</p>
+              </p>
+        </div>
     </div>
     </div>
     <form v-show="fileId === -1 || fileId > 0">

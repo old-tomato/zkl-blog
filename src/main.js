@@ -17,6 +17,7 @@ Vue.http.interceptors.push(function(request, next) {
   // 统一在请求头中添加COOKIE信息
   request.headers.set("Z-Blog-Cookie", getCookie("Z-Blog-Cookie"));
   // 统一增加请求的地址前面一段
+  // 这里使用NETAPP存在问题
   request.url="http://localhost:8081" + request.url;
   next((response)=>{
       if(response.data.code == 200){
